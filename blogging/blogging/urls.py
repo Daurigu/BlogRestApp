@@ -18,8 +18,10 @@ from django.urls import path
 from django.urls import include, path
 
 import posts.urls
+import users.urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/post/', include('posts.urls')),
+    path('api/user/', include('users.urls')),
 ]

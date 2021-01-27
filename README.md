@@ -4,7 +4,7 @@ This app is made with Django, Django-rest-framework, React and Bootstrap.
 ## Sections
 
 ### Login
-- UserModel
+- User (This is the profiles)
     - Username
     - Name
     - Profile Picture
@@ -14,7 +14,7 @@ This app is made with Django, Django-rest-framework, React and Bootstrap.
     - Follower
     - Following
 
-###Blog
+### Blog
 - User
 - Time
 - update time
