@@ -43,7 +43,7 @@ class RegisterView(APIView):
         except:
             return Response({'Error': 'There was an error tryning to register, please try again.'})
 
-
+@method_decorator(csrf_protect, name='dispatch')
 class LoginView(APIView):
     def post(self, request, format=None):
         data = self.request.data
@@ -60,11 +60,11 @@ class LoginView(APIView):
         else:
             return Response({'Login': 'Fail'})
 
-
+@method_decorator(csrf_protect, name='dispatch')
 class LogoutView(APIView):
     permission_classes = (IsAuthenticated,)
 
-    def post(self, request, format=None):
+    def get(self, request, format=None):
         try:
             logout(self.request)
             return Response({'logout': 'Success'})
@@ -110,7 +110,7 @@ class GetUsersView(APIView):
             serializer = UserSerializer(users, many=True)
             return Response(serializer.data)
         except:
-            return Response({'Error': 'There was an error tryning to register, please try again.'})
+            return Response({'Error': 'There was an error, please try again.'})
 
 #----------------------
 #    PROFILE
@@ -138,7 +138,7 @@ class UpdateUserProfileView(APIView):
 
             return Response({'user': str(user.username), 'profile': serializer.data})
         except:
-            return Response({'Error': 'There was an error tryning to register, please try again.'})
+            return Response({'Error': 'There was an error, please try again.'})
 
 
 @method_decorator(ensure_csrf_cookie, name='dispatch')
@@ -146,13 +146,16 @@ class GetUserProfile(APIView):
     permission_classes = (IsAuthenticated,)
 
     def get(self, request, format=None):
-        user = self.request.user
-        user_id = User.objects.get(id=user.id)
+        try:
+            user = self.request.user
+            user_id = User.objects.get(id=user.id)
 
-        user_profile = UserProfileModel.objects.get(username=user_id)
-        serializer = UserProfileSerializer(user_profile)
+            user_profile = UserProfileModel.objects.get(username=user_id)
+            serializer = UserProfileSerializer(user_profile)
 
-        return Response({'user': str(user.username), 'profile': serializer.data})
+            return Response({'user': str(user.username), 'profile': serializer.data})
+        except:
+            return Response({'Error': 'There was an error, please try again.'})
 
 
 #----------------------
@@ -171,16 +174,37 @@ class FollowView(APIView):
             follow = data['follow']
             follow = User.objects.get(username=follow)
 
-            followObject = UserFollowsModel(user_id=user, following_user_id=follow)
-            followObject.save()
+            exist = UserFollowsModel.objects.filter(user_id=user, following_user_id=follow)
 
-            user_profile = UserFollowsModel.objects.get(user_id=user.id)
-            serializer = UserFollowerSerializer(user_profile)
+            if not exist:
+                followObject = UserFollowsModel(user_id=user, following_user_id=follow)
+                followObject.save()
+            else:
+                return Response({'error': 'You already follow that user. If you want to unfollow, use the "unfollow" call.'})
+
             
-            return Response({'user': str(user.username), 'following': serializer.data})
+            return Response({'user': str(user.username), 'following': follow})
 
         except:
-            return Response({'Error': 'There was an error tryning to register, please try again.'})
+            return Response({'Error': 'There was an error! Please try again.'})
+
+@method_decorator(ensure_csrf_cookie, name='dispatch')
+class UnfollowView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, format=None):
+        try:
+            user = self.request.user
+            data = self.request.data
+
+            follow = data['unfollow']
+            follow = User.objects.get(username=follow)
+
+            UserFollowsModel.objects.get(user_id=user, following_user_id=follow).delete()
+            
+            return Response({'user': str(user.username), 'following': str(follow) + ' unfollowed'})
+        except:
+            return Response({'Error': 'There was an error! Please try again.'})
 
 
 @method_decorator(ensure_csrf_cookie, name='dispatch')
