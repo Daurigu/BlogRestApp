@@ -1,2 +1,2 @@
-blogging/secret_key.txt
-blogging/db.sqlite3
+secret_key.txt
+db.sqlite3
