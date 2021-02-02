@@ -88,7 +88,6 @@ class GetFollowingPostsView(APIView):
             newData = []
 
             for i in user_profile.following.all():
-                print(i.following_user_id.id)
                 data = PostsModel.objects.filter(username=i.following_user_id.id)
                 serializer = PostSerializer(data, many=True)
                 newData = newData + serializer.data
