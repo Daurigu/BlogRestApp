@@ -60,6 +60,7 @@ class LoginView(APIView):
         else:
             return Response({'Login': 'Fail'})
 
+
 @method_decorator(csrf_protect, name='dispatch')
 class LogoutView(APIView):
     permission_classes = (IsAuthenticated,)
@@ -75,7 +76,7 @@ class LogoutView(APIView):
 @method_decorator(ensure_csrf_cookie, name='dispatch')
 class GetSCRFToken(APIView):
     def get(self, request, format=None):
-        return Response({'CSRF Sent'})
+        return Response({'CSRF':'Sent'})
 
 
 @method_decorator(ensure_csrf_cookie, name='dispatch')

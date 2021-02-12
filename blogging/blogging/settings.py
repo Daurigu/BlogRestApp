@@ -26,7 +26,7 @@ with open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['http://localhost:3000', '127.0.0.1', 'http://localhost:8000/', 'localhost']
 
 
 # Application definition
@@ -73,7 +73,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, 'build')
+            os.path.join(os.path.dirname(BASE_DIR), 'frontend-bloging-app/build')
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -137,12 +137,73 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_ROOT = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 
-#CORS_ORIGIN_WHITELIST = 'localhost:3000',
-CORS_ORIGIN_ALLOW_ALL = True
+CSRF_COOKIE_SAMESITE = None
+SESSION_COOKIE_SAMESITE = None
+
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ALLOW_CREDENTIALS = True
+CSRF_COOKIE_SECURE = True
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+    'http://0.0.0.0:3000',
+    'http://172.17.195.113:3000',
+]
+
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'build/static'),
+    os.path.join(os.path.dirname(BASE_DIR), 'frontend-bloging-app/build/static'),
 ]
+
+'''
+CSRF_COOKIE_SAMESITE = 'Lax'
+SESSION_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_HTTPONLY = True
+SESSION_COOKIE_HTTPONLY = True
+
+SESSION_COOKIE_SECURE = True 
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+    'http://0.0.0.0:3000',
+]
+
+#CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']
+#CORS_ALLOW_CREDENTIALS = True
+
+CSRF_TRUSTED_ORIGINS = [
+    'localhost:3000',
+    '127.0.0.1:3000',
+]
+
+# -- Tercero
+
+# ----------------------------------------------------------
+
+CORS_ORIGIN_ALLOW_ALL = False
+#CORS_ORIGIN_WHITELIST = 'http://localhost:3000',
+CSRF_COOKIE_SAMESITE = 'Lax'
+SESSION_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_HTTPONLY = True
+SESSION_COOKIE_HTTPONLY = True
+CORS_ALLOWED_ORIGINS = ['http://localhost:3000', 'http://localhost:8000', 'http://127.0.0.1:3000', 'http://0.0.0.0:3000',]
+CORS_ALLOW_CREDENTIALS = True
+
+from corsheaders.defaults import default_headers
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    'X-CSRFToken',
+    'Set-Cookie',
+    'Cookie',
+    'set-cookie',
+    'HTTP_X_CSRFTOKEN',
+]
+
+CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']
+CORS_ORIGIN_WHITELIST = ['http://localhost:3000', 'http://localhost:8000',]
+CSRF_TRUSTED_ORIGINS = ['http://localhost:3000', 'http://localhost:8000',]
+'''
