@@ -12,6 +12,7 @@ import Logout from './Views/Logout'
 import FollowerProfile from './Views/FollowerProfile'
 import Feed from './Views/Feed'
 import UserProfile from './Views/UserProfile'
+import Register from './Views/Register'
 
 
 
@@ -26,8 +27,9 @@ function App() {
         <Route exact path='/login' component={Login} />
         <Route exact path='/logout' component={Logout} />
         <Route exact path='/home' component={Feed} />
-        <Route exact path='/follower-profile' component={FollowerProfile} />
+        <Route exact path='/follower-profile/:slug' component={FollowerProfile} />
         <Route exact path='/user-profile' component={UserProfile} />
+        <Route exact path='/register' component={Register} />
       </Switch>
 
     </Router>

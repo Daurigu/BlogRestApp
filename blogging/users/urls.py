@@ -12,7 +12,10 @@ from users.views import (RegisterView,
                         FollowView,
                         UnfollowView,
                         GetFollowingView,
-                        GetFollowerView)
+                        GetFollowerView,
+                        GetOtherUserProfile,
+                        GetOthersFollowingView,
+                        GetOthersFollowerView)
 
 urlpatterns = [
     path('register', RegisterView.as_view()),
@@ -22,10 +25,13 @@ urlpatterns = [
     path('all', GetUsersView.as_view()),
     path('update-profile', UpdateUserProfileView.as_view()),
     path('profile', GetUserProfile.as_view()),
+    path('profile/<str:pk>', GetOtherUserProfile.as_view()),
     path('follow', FollowView.as_view()),
     path('unfollow', UnfollowView.as_view()),
     path('following', GetFollowingView.as_view()),
     path('follower', GetFollowerView.as_view()),
+    path('following/<str:pk>', GetOthersFollowingView.as_view()),
+    path('follower/<str:pk>', GetOthersFollowerView.as_view()),
     path('csrf', GetSCRFToken.as_view()),
 ]
 

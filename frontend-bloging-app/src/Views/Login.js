@@ -61,9 +61,6 @@ function Login(){
         'Cookie': String(document.cookie)
       }
 
-      console.log(' --- --- Headers --- ---')
-      console.log(headers)
-
       var config = {
         method: 'post',
         url: 'http://127.0.0.1:8000/api/user/login',
@@ -75,10 +72,12 @@ function Login(){
       axios(config)
       .then(function (response) {
         console.log(JSON.stringify(response.data));
+        window.location.href = '/home'
       })
       .catch(function (error) {
         console.log(error)
       });
+      
     }
 
     let handleUsername = (event) =>{

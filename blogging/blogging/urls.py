@@ -24,6 +24,7 @@ import users.urls
 urlpatterns = [
     path('',TemplateView.as_view(template_name='index.html')),
     path('<path>',TemplateView.as_view(template_name='index.html')),
+    path('<path>/<str>',TemplateView.as_view(template_name='index.html')),
     path('admin/', admin.site.urls),
     path('api/post/', include('posts.urls')),
     path('api/user/', include('users.urls')),

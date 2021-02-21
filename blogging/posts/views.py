@@ -67,6 +67,17 @@ class GetUserPostsView(APIView):
 
 
 @method_decorator(ensure_csrf_cookie, name='dispatch')
+class GetOthersUsersPostsView(APIView):
+    permission_classes = (IsAuthenticated,)
+    def get(self, request, pk, format=None):
+        user = User.objects.get(username=pk)
+        data = PostsModel.objects.filter(username=user)
+        
+        serializer = PostSerializer(data, many=True)
+        return Response({'username': user.username, 'data': serializer.data})
+
+
+@method_decorator(ensure_csrf_cookie, name='dispatch')
 class GetAllPostsView(APIView):
     permission_classes = (IsAuthenticated,)
     def get(self, request, format=None):

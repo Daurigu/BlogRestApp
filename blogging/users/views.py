@@ -159,6 +159,21 @@ class GetUserProfile(APIView):
             return Response({'Error': 'There was an error, please try again.'})
 
 
+@method_decorator(ensure_csrf_cookie, name='dispatch')
+class GetOtherUserProfile(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, pk, format=None):
+        try:
+            user_id = User.objects.get(username=pk)
+
+            user_profile = UserProfileModel.objects.get(username=user_id)
+            serializer = UserProfileSerializer(user_profile)
+
+            return Response({'user': pk, 'profile': serializer.data})
+        except:
+            return Response({'user': 'Not Found', 'profile': {'name': 'Not Found','profile_pic': '', 'email': '','about': ''}})
+
 #----------------------
 #    FOLLOW
 #----------------------
@@ -214,13 +229,19 @@ class GetFollowingView(APIView):
 
     def get(self, request, format=None):
         user = self.request.user
+        
         try:
-
             user_profile = User.objects.get(id=user.id)
-            serializer = UserFollowerSerializer(user_profile.following.all(), many=True)
-                
-            return Response({'user': str(user.username), 'following': serializer.data})
+            following = user_profile.following.all().values()
+            newData= []
+            
+            for i in following:
+                user_id = User.objects.get(id=int(i['following_user_id_id']))
+                profile = UserProfileModel.objects.get(username=user_id)
+                serializer = UserProfileSerializer(profile)
+                newData.append(serializer.data)
 
+            return Response({'user': str(user.username), 'following': newData})
         except:
             return Response({'Error': 'There was an error, please try again.'})
 
@@ -233,8 +254,64 @@ class GetFollowerView(APIView):
         user = self.request.user
         try:
             user_profile = User.objects.get(id=user.id)
-            serializer = UserFollowerSerializer(user_profile.followers.all(), many=True)
-        
-            return Response({'user': str(user.username), 'followers': serializer.data})
+            following = user_profile.followers.all().values()
+            newData= []
+            
+            for i in following:
+                user_id = User.objects.get(id=int(i['user_id_id']))
+                profile = UserProfileModel.objects.get(username=user_id)
+                serializer = UserProfileSerializer(profile)
+                newData.append(serializer.data)
+
+            return Response({'user': str(user.username), 'follower': newData})
+        except:
+            return Response({'Error': 'There was an error, please try again.'})
+
+
+''' 
+-----------------------
+------ Others Followers
+-----------------------
+''' 
+
+@method_decorator(ensure_csrf_cookie, name='dispatch')
+class GetOthersFollowingView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, pk, format=None):
+                
+        try:
+            user_profile = User.objects.get(username=pk)
+            following = user_profile.following.all().values()
+            newData= []
+            
+            for i in following:
+                user_id = User.objects.get(id=int(i['following_user_id_id']))
+                profile = UserProfileModel.objects.get(username=user_id)
+                serializer = UserProfileSerializer(profile)
+                newData.append(serializer.data)
+
+            return Response({'user': pk, 'following': newData})
+        except:
+            return Response({'Error': 'There was an error, please try again.'})
+
+
+@method_decorator(ensure_csrf_cookie, name='dispatch')
+class GetOthersFollowerView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, pk, format=None):
+        try:
+            user_profile = User.objects.get(username=pk)
+            following = user_profile.followers.all().values()
+            newData= []
+            
+            for i in following:
+                user_id = User.objects.get(id=int(i['user_id_id']))
+                profile = UserProfileModel.objects.get(username=user_id)
+                serializer = UserProfileSerializer(profile)
+                newData.append(serializer.data)
+
+            return Response({'user': pk, 'follower': newData})
         except:
             return Response({'Error': 'There was an error, please try again.'})

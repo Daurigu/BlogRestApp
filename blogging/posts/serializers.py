@@ -3,6 +3,7 @@ from rest_framework import serializers
 from posts.models import PostsModel, CommentsModel, LikeModel
 
 class PostSerializer(serializers.ModelSerializer):
+    username = serializers.CharField()
     class Meta:
         model = PostsModel
         fields = ['username', 'title', 'content', 'image']

@@ -1,21 +1,31 @@
 import React from 'react'
 
-function Post(){
+import {
+    Link,
+  } from 'react-router-dom'
+
+function Post(props){
+
+    let data = props.post
+
+
     return(
         <div className='p-3  rounded bck-color mb-2 shadow'>
             <div className='row'>
                 <div className='col-2'>
-                    <img className='rounded-circle img-fluid img-thumbnail img-height' src='https://letstalkscience.ca/sites/default/files/styles/x_large/public/2020-03/Cow.jpg?itok=iGJw1FHC' alt=''/>
+                    <Link to={`/follower-profile/${data.username}`}>
+                        <img className='rounded-circle img-fluid img-thumbnail img-height' src='https://letstalkscience.ca/sites/default/files/styles/x_large/public/2020-03/Cow.jpg?itok=iGJw1FHC' alt=''/>
+                    </Link>
                 </div>
                 <div className='col'>
-                    <h3>Post Title</h3>
-                    <p>user</p>
+                    <h3>{data.title}</h3>
+                    <Link to={`/follower-profile/${data.username}`} className='text-secondary'><p >{data.username}</p></Link>
                 </div>
                 <p className='col-2'>Time</p>
             </div>
 
-            <img className='img-fluid rounded' src='https://dkpo4ygqb6rh6.cloudfront.net/COWSIGNALS_COM/imageresized/4023/8248646f7e35630b2bb4bf597c22b73a/2560_1440_75_fixedjpg/cowsignals_2560px.jpg' alt=''/>
-            <p className='mt-2'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <img className='img-fluid rounded' src={data.image} alt=''/>
+            <p className='mt-2'>{data.content}</p>
 
             <div className='row'>
                 <div className='col-1 justify-content-center'>
