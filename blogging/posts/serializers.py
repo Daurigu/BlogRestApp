@@ -6,9 +6,20 @@ class PostSerializer(serializers.ModelSerializer):
     username = serializers.CharField()
     class Meta:
         model = PostsModel
-        fields = ['username', 'title', 'content', 'image']
+        fields = ['id', 'username', 'title', 'content', 'image', 'time']
+
+class AddPostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PostsModel
+        fields = ['username', 'title', 'content', 'image', 'time']
 
 class CommentSerializer(serializers.ModelSerializer):
+    user = serializers.CharField()
+    class Meta:
+        model = CommentsModel
+        fields = '__all__'
+
+class CreateCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = CommentsModel
         fields = '__all__'

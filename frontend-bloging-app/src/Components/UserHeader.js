@@ -1,19 +1,109 @@
-import React from 'react'
+import React,{useState, useEffect} from 'react'
 
-import {
-    Link,
-  } from "react-router-dom";
+import {Link} from "react-router-dom";
+import axios from 'axios'
+
+import getCookie from '../Components/getCookie'
 
 function UserHeader(props){
     let profileType
     let data = props.data
 
+    const [following, setFollowing] = useState()
+    const [follButton, setFollButton] = useState('')
+
+    useEffect(()=>{
+        axios({
+            method: 'get',
+            url: 'http://127.0.0.1:8000/api/user/following',
+            headers:{
+                'x-csrftoken': getCookie('csrftoken'),
+                'content-type': 'application/json'
+            }
+        }).then(response=>{
+            setFollowing(response.data.following)
+        }).catch(e=>{
+            console.log(e)
+        })
+    },[])
+    
+
+
+    let unfollow = ()=>{
+        axios({
+            method: 'post',
+            url: 'http://127.0.0.1:8000/api/user/unfollow',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'content-type': 'application/json' 
+            },
+            data: {
+                'unfollow': data.username
+            }
+        }).then(response=>{
+            console.log(response)
+        }).catch(e=>{
+            console.log(e)
+        })
+    }
+
+    let follow = (e)=>{
+        e.preventDefault();
+        axios({
+            method: 'post',
+            url: 'http://127.0.0.1:8000/api/user/follow',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'content-type': 'application/json' 
+            },
+            data: {
+                'follow': data.username
+            }
+        }).then(response=>{
+            if(response.data.error === 'You already follow that user'){
+                unfollow()
+            }
+        }).catch(e=>{
+            console.log(e)
+        })
+    }
+
+    let followButton =
+    <a href='' onClick={()=>follow} className='col'>
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" className='center-svg bi bi-journal-arrow-down' viewBox="0 0 16 16">
+            <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+            <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+        </svg>
+        <p className='text-center'>Follow</p>
+    </a>
+    
+
+    if (following){
+        for(let element= 0; element<following.length; element++){
+            if(following[element].username === data.username){
+                followButton =
+                <a href='' onClick={()=>follow} className='col'>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="center-svg bi bi-person-dash" viewBox="0 0 16 16">
+                        <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                        <path fill-rule="evenodd" d="M11 7.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5z"/>
+                    </svg>
+                    <p className='text-center'>Unfollow</p>
+                </a>
+            }
+        }
+    }
+
     if (props.profile === 'user'){
         profileType = 'user-profile'
+        followButton = ''
     }else{
         profileType = `follower-profile/${props.user}`
-        console.log(props.user)
     }
+
+    useEffect(()=>{
+        setFollButton(followButton)
+    },[follButton])
+
 
     return(
         <div>
@@ -55,6 +145,7 @@ function UserHeader(props){
                     </svg>
                     <p className='text-center'>Followers</p>
                 </Link>
+                {follButton}
             </div>
         </div>
     )

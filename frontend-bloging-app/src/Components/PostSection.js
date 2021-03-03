@@ -43,8 +43,8 @@ function PostSection(){
 
 
     return(
-        <div>
-            <form className='shadow rounded' action="">
+        <div className='bg-white'>
+            <form className='shadow-sm rounded' action="">
                 <input className='form-control' onChange={handleTitle} placeholder='Title' type="text" name="title" id="override-form-control"/>
                 <textarea className='form-control' onChange={handleContent} placeholder='Write your blog here' name="content" id="override-form-control"/>
                 <div className="d-grid gap-2 d-md-flex justify-content-md-end m-1">

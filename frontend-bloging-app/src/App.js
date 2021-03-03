@@ -13,6 +13,8 @@ import FollowerProfile from './Views/FollowerProfile'
 import Feed from './Views/Feed'
 import UserProfile from './Views/UserProfile'
 import Register from './Views/Register'
+import WelcomePage from './Views/WelcomePage';
+import EditProfile from './Views/EditProfile'
 
 
 
@@ -23,13 +25,14 @@ function App() {
       <Navbar />
 
       <Switch>
-        <Route exact path='/' component={Login} />
-        <Route exact path='/login' component={Login} />
+        <Route exact path='/' component={WelcomePage} />
+        <Route exact path='/login' component={WelcomePage} />
         <Route exact path='/logout' component={Logout} />
         <Route exact path='/home' component={Feed} />
         <Route exact path='/follower-profile/:slug' component={FollowerProfile} />
         <Route exact path='/user-profile' component={UserProfile} />
         <Route exact path='/register' component={Register} />
+        <Route exact path='/edit-profile' component={EditProfile} />
       </Switch>
 
     </Router>

@@ -9,7 +9,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth import authenticate, login, logout
 
 from users.models import UserProfileModel, UserFollowsModel
-from users.serializers import UserSerializer, UserProfileSerializer, UserFollowerSerializer
+from users.serializers import UserSerializer, UserProfileSerializer, UserFollowerSerializer, EditUserProfileSerializer
 
 # Create your views here.
 @method_decorator(csrf_protect, name='dispatch')
@@ -135,7 +135,7 @@ class UpdateUserProfileView(APIView):
             UserProfileModel.objects.filter(username=user_id).update(name=name, profile_pic=profile_pic, email=email, about=about)
             
             user_profile = UserProfileModel.objects.get(username=user_id)
-            serializer = UserProfileSerializer(user_profile)
+            serializer = EditUserProfileSerializer(user_profile)
 
             return Response({'user': str(user.username), 'profile': serializer.data})
         except:
@@ -196,10 +196,10 @@ class FollowView(APIView):
                 followObject = UserFollowsModel(user_id=user, following_user_id=follow)
                 followObject.save()
             else:
-                return Response({'error': 'You already follow that user. If you want to unfollow, use the "unfollow" call.'})
+                return Response({'error': 'You already follow that user'})
 
             
-            return Response({'user': str(user.username), 'following': follow})
+            return Response({'user': str(user.username), 'following': str(follow)})
 
         except:
             return Response({'Error': 'There was an error! Please try again.'})

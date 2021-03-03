@@ -14,6 +14,11 @@ class UserProfileSerializer(serializers.ModelSerializer):
         model = UserProfileModel
         fields = ['username', 'name', 'profile_pic', 'email', 'about']
 
+class EditUserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfileModel
+        fields = ['name', 'profile_pic', 'email', 'about']
+
 
 class UserFollowerSerializer(serializers.ModelSerializer):
     class Meta:

@@ -10,7 +10,7 @@ from django.contrib.auth import authenticate, login, logout
 
 from users.models import UserFollowsModel
 from posts.models import PostsModel, CommentsModel, LikeModel
-from posts.serializers import PostSerializer, CommentSerializer, LikeSerializer
+from posts.serializers import PostSerializer, CommentSerializer, LikeSerializer, AddPostSerializer, CreateCommentSerializer
 from users.serializers import UserFollowerSerializer
 
 
@@ -21,10 +21,10 @@ class CreatePostsView(APIView):
     def post(self, request, format=None):
         data = self.request.data
         data['username'] = self.request.user.id
-        serializer = PostSerializer(data=request.data)
+        serializer = AddPostSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response({'post': 'Created Successfully'})
+            return Response({'post': 'Created Successfully', 'data': serializer.data})
         return Response({'post': 'There was an error! Please try again.', 'error': serializer.errors})
 
 
@@ -42,7 +42,7 @@ class EditPostsView(APIView):
             if obj.username.id == user_id:
                 data['username'] = user_id
                 if obj is not None:
-                    serializer = PostSerializer(obj, data=request.data)
+                    serializer = AddPostSerializer(obj, data=request.data)
                 else:
                     return Response({'post': 'There was an error finding that post! Please try again.'})
 
@@ -117,7 +117,7 @@ class CreateCommentView(APIView):
 
             data['user'] = user.id
             
-            serializer = CommentSerializer(data = data)
+            serializer = CreateCommentSerializer(data = data)
             if serializer.is_valid():
                 serializer.save()
                 return Response({'comment': serializer.data})
@@ -177,4 +177,5 @@ class DeslikeView(APIView):
             return Response({'deslike': 'You desliked this post'})
         except:
             return Response({'error': 'There was an error! please ty again.'})
+
 

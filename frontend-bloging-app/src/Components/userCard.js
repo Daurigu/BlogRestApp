@@ -14,7 +14,7 @@ function UserCard(props){
     }
 
     return(
-        <div className='p-3 rounded mb-2 shadow'>
+        <div className='p-3 rounded mb-2 shadow-sm bg-white'>
             <div className='row'>
                 <div className='col-2'>
                     <a href={`/follower-profile/${data.username}`}>
@@ -27,7 +27,9 @@ function UserCard(props){
                     </a>
                     <p>{data.about}</p>
                 </div>
-                <div className='col-2'></div>
+                <div className='col-2'>
+                    
+                </div>
             </div>
         </div>
     )

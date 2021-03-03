@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 
 import axios from 'axios'
+import getCookie from '../Components/getCookie'
 
 function Login(){
   axios.defaults.xsrfCookieName = 'csrftoken'
@@ -9,22 +10,7 @@ function Login(){
     const [user, setUser] = useState({username: '', password: '',})
     const [csrftoken, setCsrftoken] = useState()
 
-    let getCsrfToken = () =>{
-      function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
-      }
-
+    useEffect( ()=>{
       axios({
         method: 'get',
         url: 'http://127.0.0.1:8000/api/user/csrf',
@@ -40,11 +26,6 @@ function Login(){
       }).catch( e=>{
         console.log(e)
       })
-    }
-
-
-    useEffect( ()=>{
-      getCsrfToken()
     }, [])
 
 
@@ -71,7 +52,6 @@ function Login(){
       
       axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
         window.location.href = '/home'
       })
       .catch(function (error) {
@@ -98,9 +78,8 @@ function Login(){
 
 
     return(
-        <div className='row '>
-            <div className="col-3">.</div>
-            <form className='col-6 mt-5 align-self-center'>
+        <div className='row'>
+            <form className='mt-5 align-self-center'>
                 <input name="csrfmiddlewaretoken" type="hidden" value={csrftoken? csrftoken:''} id="csrf" ic-global-include="#csrf"/>
                 <div className="mb-3">
                     <label htmlFor="exampleInputEmail1" className="form-label">Username</label>
@@ -110,13 +89,10 @@ function Login(){
                     <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
                     <input type="password" onChange ={handlePassword} className="form-control" id="exampleInputPassword1"/>
                 </div>
-                <div onClick={sendRequest} className="btn btn_success">Submit</div>
-                <div onClick={getCsrfToken} className="btn btn_success">CSRF</div>
-                <button type="submit" onClick={sendRequest} className="btn btn-primary">Submit</button>
+                <div className='row justify-content-center'>
+                  <button type="submit" onClick={sendRequest} className="btn btn-outline-success col-9">Login</button>
+                </div>
             </form>
-            <div className="col-3">.</div>
-        <p>{document.cookie}</p>
-        <p>{csrftoken}</p>
         </div>
     )
 }
