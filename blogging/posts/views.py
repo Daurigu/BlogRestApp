@@ -55,6 +55,18 @@ class EditPostsView(APIView):
         except:
             return Response({'post': 'There was an error. Please check your data and try again.'})
 
+@method_decorator(ensure_csrf_cookie, name='dispatch')
+class GetPostView(APIView):
+    permission_classes = (IsAuthenticated,)
+    def post(self, request, format=None):
+        try:
+            data = self.request.data
+            post = PostsModel.objects.get(id=data['id'])
+            serializer = PostSerializer(post)
+            return Response({'post': serializer.data})
+        except:
+            return Response({'post': 'There was an error. Check if your data is valid.'})
+
 
 @method_decorator(ensure_csrf_cookie, name='dispatch')
 class GetUserPostsView(APIView):

@@ -5,6 +5,7 @@ import PostSection from '../Components/PostSection'
 import UserHeader from '../Components/UserHeader'
 import getCookie from '../Components/getCookie'
 import UserCard from '../Components/userCard'
+import EditPost from './EditPost'
 
 import axios from 'axios'
 import {
@@ -92,7 +93,7 @@ function UserProfile(){
 
     if (posts){
         showPosts = posts.map((element)=>{
-            return <Posts post={element}/>
+            return <Posts post={element} type='user'/>
         })
     }
 
@@ -133,7 +134,7 @@ function UserProfile(){
                 
                 <Router>
                     <UserHeader profile='user' data={profile}/>               
-
+                    
                     <Switch>
                         <Route exact path='/user-profile'>
                             {showPosts}
@@ -144,6 +145,10 @@ function UserProfile(){
                         <Route exact path='/user-profile/followers' >
                             {showFollower}
                         </ Route>
+                        <Route exact path='/edit-post/:slug' >
+                            <EditPost />
+                        </Route>
+                        
                     </Switch>
                 </Router>
 

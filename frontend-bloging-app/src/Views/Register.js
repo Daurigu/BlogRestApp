@@ -11,6 +11,7 @@ function Register(){
         'password':'',
         're_password':'',
     })
+    const [message, setMessage] = useState('')
 
 
     let handleName =(event)=>{
@@ -42,19 +43,20 @@ function Register(){
             return <p Style='color:red'><b>Different password!</b> Please try again.</p>}
     }
 
-    let handdleRegister =()=>{
+    let handdleRegister =(e)=>{
+        e.preventDefault()
         axios({
             method: 'post',
-            url: '',
+            url: 'http://127.0.0.1:8000/api/user/register',
             headers:{
                 'x-csrftoken': getCookie('csrftoken'),
                 'content-type': 'application/json'
             },
             data: register
         }).then( response=>{
-            console.log(response)
+            setMessage(<p>Success, now login to your new account</p>)
         }).catch( e=>{
-            console.log(e)
+            setMessage(<p Style='color:red'>Error! Please try again latter</p>)
         })
     }
 
@@ -72,6 +74,7 @@ function Register(){
                 </div>
             </form>
             {showError}
+            {message}
         </div>
     )
 }

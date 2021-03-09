@@ -21,12 +21,7 @@ function FollowerProfile(){
     const [posts, setPosts] = useState()
     const [following, setFollowing] = useState()
     const [follower, setFollower] = useState()
-    const [profile, setProfile] = useState({
-        "name": "",
-        "profile_pic": "",
-        "email": "",
-        "about": ""
-    })
+    const [profile, setProfile] = useState()
     
     let showPosts = 'Loading...'
     let showFollowing = 'Loading...'

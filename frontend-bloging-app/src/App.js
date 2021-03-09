@@ -7,7 +7,6 @@ import {
 } from "react-router-dom";
 
 import Navbar from './Views/Navbar'
-import Login from './Views/Login'
 import Logout from './Views/Logout'
 import FollowerProfile from './Views/FollowerProfile'
 import Feed from './Views/Feed'
@@ -15,6 +14,7 @@ import UserProfile from './Views/UserProfile'
 import Register from './Views/Register'
 import WelcomePage from './Views/WelcomePage';
 import EditProfile from './Views/EditProfile'
+import EditPost from './Views/EditPost'
 
 
 
@@ -33,6 +33,7 @@ function App() {
         <Route exact path='/user-profile' component={UserProfile} />
         <Route exact path='/register' component={Register} />
         <Route exact path='/edit-profile' component={EditProfile} />
+        <Route exact path='/edit-post/:slug' component={EditPost} />
       </Switch>
 
     </Router>

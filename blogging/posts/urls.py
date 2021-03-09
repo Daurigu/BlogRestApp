@@ -10,10 +10,12 @@ from posts.views import (CreatePostsView,
                         LikeView,
                         DeslikeView,
                         GetCommentView,
-                        GetOthersUsersPostsView)
+                        GetOthersUsersPostsView,
+                        GetPostView)
 
 urlpatterns = [
-    path('create', CreatePostsView.as_view()), 
+    path('create', CreatePostsView.as_view()),
+    path('get', GetPostView.as_view()),
     path('mine', GetUserPostsView.as_view()),
     path('user/<str:pk>', GetOthersUsersPostsView.as_view()),
     path('all', GetAllPostsView.as_view()),

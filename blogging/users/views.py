@@ -12,7 +12,7 @@ from users.models import UserProfileModel, UserFollowsModel
 from users.serializers import UserSerializer, UserProfileSerializer, UserFollowerSerializer, EditUserProfileSerializer
 
 # Create your views here.
-@method_decorator(csrf_protect, name='dispatch')
+#@method_decorator(csrf_protect, name='dispatch')
 class RegisterView(APIView):
 
     def post(self, request, format=None):
@@ -186,23 +186,23 @@ class FollowView(APIView):
     def post(self, request, format=None):
         user = self.request.user
         data = self.request.data
-        try:
-            follow = data['follow']
-            follow = User.objects.get(username=follow)
+        #try:
+        follow = data['follow']
+        follow = User.objects.get(username=follow)
 
-            exist = UserFollowsModel.objects.filter(user_id=user, following_user_id=follow)
+        exist = UserFollowsModel.objects.filter(user_id=user, following_user_id=follow)
 
-            if not exist:
-                followObject = UserFollowsModel(user_id=user, following_user_id=follow)
-                followObject.save()
-            else:
-                return Response({'error': 'You already follow that user'})
+        if not exist:
+            followObject = UserFollowsModel(user_id=user, following_user_id=follow)
+            followObject.save()
+        else:
+            return Response({'error': 'You already follow that user'})
 
-            
-            return Response({'user': str(user.username), 'following': str(follow)})
+        
+        return Response({'user': str(user.username), 'following': str(follow)})
 
-        except:
-            return Response({'Error': 'There was an error! Please try again.'})
+        #except:
+        #    return Response({'Error': 'There was an error! Please try again.'})
 
 @method_decorator(ensure_csrf_cookie, name='dispatch')
 class UnfollowView(APIView):

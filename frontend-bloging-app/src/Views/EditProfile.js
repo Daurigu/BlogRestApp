@@ -86,13 +86,13 @@ function EditProfile(props){
                 <div className="col-8">
                     <form>
                         <label className='form-label mt-3'>Name</label>
-                        <input className='form-control' onChange={handdleName} placeholder={profile.name} type='text' name='' id=''/>
+                        <input className='form-control' onChange={handdleName} value={profile.name} type='text' name='' id=''/>
                         <label className='form-label mt-3'>Profile Picture</label>
-                        <input className='form-control' onChange={handdlePic} placeholder={profile.profile_pic} type='text' name='' id=''/>
+                        <input className='form-control' onChange={handdlePic} value={profile.profile_pic} type='text' name='' id=''/>
                         <label className='form-label mt-3'>Email</label>
-                        <input className='form-control' onChange={handdleEmail} placeholder={profile.email} type='text' name='' id=''/>
+                        <input className='form-control' onChange={handdleEmail} value={profile.email} type='text' name='' id=''/>
                         <label className='form-label mt-3'>About</label>
-                        <input className='form-control' onChange={handdleAbout} placeholder={profile.about} type='text' name='' id=''/>
+                        <input className='form-control' onChange={handdleAbout} value={profile.about} type='text' name='' id=''/>
                         <div className="row justify-content-center">
                             <button className='btn btn-outline-success mt-3 col-9' onClick={handdleUpdate} type="submit">Update</button>
                         </div>
