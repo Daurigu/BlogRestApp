@@ -268,6 +268,32 @@ class GetFollowerView(APIView):
             return Response({'Error': 'There was an error, please try again.'})
 
 
+@method_decorator(ensure_csrf_cookie, name='dispatch')
+class GetIfFollowView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, format=None):
+        user = self.request.user
+        data = self.request.data
+        try:
+            user_profile = User.objects.get(id=user.id)
+            following = user_profile.following.all().values()
+            newData = []
+
+            flag = False
+            for i in following:
+                user_id = User.objects.get(id=int(i['following_user_id_id']))
+                print(str(user_id))
+                print(data['username'])
+                if str(user_id) == data['username']:
+                    flag = True
+
+
+            return Response({'user': data['username'], 'following': flag})
+        except:
+            return Response({'Error': 'There was an error, please try again.'})
+
+
 ''' 
 -----------------------
 ------ Others Followers

@@ -104,7 +104,7 @@ function Post(props){
         setComment(comment===''? <CommentContainers data={data}/>: '')
     }
     let editButton = ''
-    console.log(props.type)
+    
     if (props.type==='user'){
         editButton = 
         <div className='col-2'>

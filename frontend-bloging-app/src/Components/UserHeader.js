@@ -9,7 +9,6 @@ function UserHeader(props){
     let profileType
     let data = props.data
 
-    const [following, setFollowing] = useState()
     const [follButton, setFollButton] = useState('')
 
     let followButton =
@@ -34,16 +33,20 @@ function UserHeader(props){
 
     useEffect(()=>{
         setFollButton(followButton)
-
         axios({
-            method: 'get',
-            url: 'http://127.0.0.1:8000/api/user/following',
+            method: 'post',
+            url: 'http://127.0.0.1:8000/api/user/if-follow',
             headers:{
                 'x-csrftoken': getCookie('csrftoken'),
                 'content-type': 'application/json'
+            },
+            data: {
+                "username": data.username
             }
         }).then(response=>{
-            setFollowing(response.data.following)
+            if(response.data.following){
+                setFollButton(unfollowButton)
+            }
         }).catch(e=>{
             console.log(e)
         })
@@ -63,7 +66,6 @@ function UserHeader(props){
                 'unfollow': data.username
             }
         }).then(response=>{
-            console.log(response)
             setFollButton(followButton)
         }).catch(e=>{
             console.log(e)
@@ -100,21 +102,6 @@ function UserHeader(props){
         profileType = `follower-profile/${props.user}`
     }
 
-    let flag = 0
-    if (following){
-        for(let element = 0; element<following.length; element++){
-            if(following[element].username === data.username){
-                flag = 1
-            }
-        }
-    }
-    /*
-    if (flag === 1){
-        console.log('1')
-        setFollButton(unfollowButton)
-    }
-
-*/
     return(
         <div>
             <div className='row'>

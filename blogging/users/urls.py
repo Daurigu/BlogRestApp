@@ -15,7 +15,8 @@ from users.views import (RegisterView,
                         GetFollowerView,
                         GetOtherUserProfile,
                         GetOthersFollowingView,
-                        GetOthersFollowerView)
+                        GetOthersFollowerView,
+                        GetIfFollowView)
 
 urlpatterns = [
     path('register', RegisterView.as_view()),
@@ -33,5 +34,6 @@ urlpatterns = [
     path('following/<str:pk>', GetOthersFollowingView.as_view()),
     path('follower/<str:pk>', GetOthersFollowerView.as_view()),
     path('csrf', GetSCRFToken.as_view()),
+    path('if-follow', GetIfFollowView.as_view()),
 ]
 
